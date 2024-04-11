@@ -1,6 +1,8 @@
 import tkinter.messagebox
 from tkinter import *
 import random
+import json
+
 # --------------UI------------------------
 
 
@@ -84,9 +86,28 @@ def on_click():
         tkinter.messagebox.askokcancel(title="Warning Message", message="Insert All the Details", type="okcancel")
     # --------------Add Data to file----------
     else:
-        file = open("password.txt", "a")
-        file.write(f"{website_name}  ||  {email_text}  ||  {password_text}\n")
-        file.close()
+        data = {
+            website_name:
+                {
+                    "email": email_text,
+                    "password": password_text
+                }
+        }
+        file = open("password.json", "r")
+        try:
+            new_data = json.load(file)
+            new_data.update(data)
+            file.close()
+            file = open("password.json", "w")
+            json.dump(new_data, file, indent=4)
+            file.close()
+        except:
+            file = open("password.json", "w")
+            json.dump(data, file, indent=4)
+            file.close()
+
+
+
 
 
 # add button button
