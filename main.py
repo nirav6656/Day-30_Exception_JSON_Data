@@ -25,6 +25,7 @@ website_field = Entry(width=53)
 website_field.grid(row=1, column=1, sticky="w")
 website_field.focus()
 
+
 # email label
 email_label = Label(text="Email :")
 email_label.grid(column=0, row=2)
@@ -93,17 +94,19 @@ def on_click():
                     "password": password_text
                 }
         }
-        file = open("password.json", "r")
+
         try:
+            file = open("password.json", "r")
             new_data = json.load(file)
-            new_data.update(data)
             file.close()
-            file = open("password.json", "w")
-            json.dump(new_data, file, indent=4)
-            file.close()
-        except:
+        except FileNotFoundError:
             file = open("password.json", "w")
             json.dump(data, file, indent=4)
+            file.close()
+        else:
+            new_data.update(data)
+            file = open("password.json", "w")
+            json.dump(new_data, file, indent=4)
             file.close()
 
 
